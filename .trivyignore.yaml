@@ -1,0 +1,27 @@
+misconfigurations:
+  - id: AVD-KSV-0118
+    paths:
+      - src/.terraform/modules/eks/examples/eks-auto-mode/deployment.yaml
+      - src/.terraform/modules/eks/examples/karpenter/inflate.yaml
+    statement: Terraform Module Example
+  - id: AVD-KSV-0014
+    paths:
+      - src/.terraform/modules/eks/examples/karpenter/inflate.yaml
+      - src/.terraform/modules/eks/examples/eks-auto-mode/deployment.yaml
+    statement: Terraform Module Example
+  - id: AVD-AWS-0040
+    paths:
+      - terraform-aws-modules/eks/aws/src/.terraform/modules/eks/main.tf
+    statement: EKS Cluster can be public
+  - id: AVD-AWS-0041
+    paths:
+      - terraform-aws-modules/eks/aws/src/.terraform/modules/eks/main.tf
+    statement: EKS Cluster can be accessble by anyone (0.0.0.0/0)
+  - id: AVD-AWS-0104
+    paths:
+      - terraform-aws-modules/eks/aws/src/.terraform/modules/eks/node_groups.tf
+    statement: SG Rule can allow egress from any IP address (0.0.0.0/0)
+  - id: AVD-AWS-0102
+    paths:
+      - terraform-aws-modules/vpc/aws/src/.terraform/modules/vpc/main.tf
+    statement: Network ACL rule can allow egress from any port
