@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: "{{ metadata.annotations.environment }}-metrics-server"
+  name: "dev-metrics-server"
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true
@@ -10,7 +10,7 @@ spec:
     - clusters: {}
   template:
     metadata:
-      name: "{{ metadata.annotations.environment }}"
+      name: "dev-metrics-server"
     spec:
       project: default
       sources:
@@ -20,11 +20,7 @@ spec:
           helm:
             releaseName: metrics-server
       destination:
-        namespace: "{{metadata.annotations.aws_load_balancer_controller_namespace}}"
+        namespace: "kube-system"
         name: "{{name}}"
       syncPolicy:
         automated: {}
-        syncOptions:
-          - CreateNamespace=true
-          - ServerSideApply=true # Big CRDs.
-
