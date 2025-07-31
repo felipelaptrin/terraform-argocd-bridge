@@ -1,3 +1,13 @@
+variable "environment" {
+  description = "Environment to deploy. It uses this name as the path of the Kubernetes manifests"
+  type        = string
+
+  validation {
+    condition     = contains(["dev"], var.environment)
+    error_message = "Valid values for var: environment are (dev)."
+  }
+}
+
 ##############################
 ##### DOMAIN
 ##############################
@@ -56,4 +66,19 @@ variable "argocd_chart_version" {
   description = "The Helm Chart version used to install ArgoCD using Terraform"
   type        = string
   default     = "8.2.1"
+}
+
+variable "gitops_repo_url" {
+  description = "URL of the repository that contains the Kubernetes manifests"
+  type        = string
+}
+
+variable "gitops_repo_addons_basepath" {
+  description = "Base Path of the repository that contains the Kubernetes manifests for the addons"
+  type        = string
+}
+
+variable "gitops_repo_revision" {
+  description = "Git revision of the repository that contains the Kubernetes manifests"
+  type        = string
 }

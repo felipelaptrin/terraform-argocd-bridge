@@ -1,0 +1,27 @@
+--- # Addons
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-addons
+  namespace: argocd
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: app-of-apps-addons
+    spec:
+      project: default
+      source:
+        repoURL: "{{ metadata.annotations.gitops_repo_url }}"
+        path: "{{ metadata.annotations.gitops_repo_addons_basepath }}/{{ metadata.annotations.environment }}"
+        targetRevision: "{{ metadata.annotations.gitops_repo_revision }}"
+        directory:
+          recurse: true
+      destination:
+        namespace: argocd
+        name: "{{name}}"
+      syncPolicy:
+        automated: {}

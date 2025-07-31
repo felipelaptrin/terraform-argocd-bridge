@@ -31,6 +31,7 @@
 | Name | Type |
 |------|------|
 | [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
+| [kubernetes_manifest.app_of_apps](https://registry.terraform.io/providers/hashicorp/kubernetes/2.38.0/docs/resources/manifest) | resource |
 | [kubernetes_secret_v1.argocd_cluster_bootstrap](https://registry.terraform.io/providers/hashicorp/kubernetes/2.38.0/docs/resources/secret_v1) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
@@ -42,6 +43,10 @@
 | <a name="input_argocd_chart_version"></a> [argocd\_chart\_version](#input\_argocd\_chart\_version) | The Helm Chart version used to install ArgoCD using Terraform | `string` | `"8.2.1"` | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS Region to deploy resources | `string` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | Route53 Domain - Hosted Zone - to be used. This resource should be created manually and will be just used in Terraform code as a data source. | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment to deploy. It uses this name as the path of the Kubernetes manifests | `string` | n/a | yes |
+| <a name="input_gitops_repo_addons_basepath"></a> [gitops\_repo\_addons\_basepath](#input\_gitops\_repo\_addons\_basepath) | Base Path of the repository that contains the Kubernetes manifests for the addons | `string` | n/a | yes |
+| <a name="input_gitops_repo_revision"></a> [gitops\_repo\_revision](#input\_gitops\_repo\_revision) | Git revision of the repository that contains the Kubernetes manifests | `string` | n/a | yes |
+| <a name="input_gitops_repo_url"></a> [gitops\_repo\_url](#input\_gitops\_repo\_url) | URL of the repository that contains the Kubernetes manifests | `string` | n/a | yes |
 | <a name="input_k8s_addons_versions"></a> [k8s\_addons\_versions](#input\_k8s\_addons\_versions) | EKS addons versions. | <pre>object({<br/>    eks-pod-identity-agent = string<br/>    aws-ebs-csi-driver     = string<br/>  })</pre> | <pre>{<br/>  "aws-ebs-csi-driver": "v1.44.0-eksbuild.1",<br/>  "eks-pod-identity-agent": "v1.3.7-eksbuild.2"<br/>}</pre> | no |
 | <a name="input_k8s_version"></a> [k8s\_version](#input\_k8s\_version) | EKS Kubernetes version. | `string` | `"1.33"` | no |
 | <a name="input_vpc_azs_number"></a> [vpc\_azs\_number](#input\_vpc\_azs\_number) | Number of AZs to use when deploying the VPC | `number` | `2` | no |
