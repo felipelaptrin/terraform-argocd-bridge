@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: "dev-metrics-server"
+  name: "{{ metadata.annotations.environment }}-metrics-server"
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true
