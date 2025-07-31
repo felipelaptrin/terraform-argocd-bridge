@@ -10,7 +10,7 @@ spec:
     - clusters: {}
   template:
     metadata:
-      name: "{{ metadata.annotations.environment }}-metrics-server"
+      name: "dev-metrics-server"
     spec:
       project: default
       sources:
