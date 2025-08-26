@@ -39,3 +39,4 @@ spec:
         automated: {}
         syncOptions:
           - CreateNamespace=true
+          - CRDs=CreateReplace
