@@ -33,6 +33,7 @@ resource "helm_release" "gitops_bridge" {
           gitops_repo_addons_basepath = var.gitops_repo_addons_basepath
           gitops_repo_revision        = var.gitops_repo_revision
           environment                 = var.environment
+          aws_region                  = var.aws_region
         }
         data = {
           name = local.prefix
