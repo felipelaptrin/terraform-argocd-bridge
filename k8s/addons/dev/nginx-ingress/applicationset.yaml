@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: "nginx-ingress"
+  name: "ingress-nginx"
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: false
@@ -10,15 +10,15 @@ spec:
     - clusters: {}
   template:
     metadata:
-      name: "{{ metadata.annotations.environment }}-nginx-ingress"
+      name: "{{ metadata.annotations.environment }}-ingress-nginx"
     spec:
       project: default
       sources:
-        - chart: nginx-ingress
-          repoURL: oci://ghcr.io/nginx/charts/nginx-ingress
-          targetRevision: 2.2.2
+        - chart: ingress-nginx
+          repoURL: https://kubernetes.github.io/ingress-nginx
+          targetRevision: 4.13.1
           helm:
-            releaseName: nginx-ingress
+            releaseName: ingress-nginx
       destination:
         namespace: "kube-system"
         name: "{{name}}"

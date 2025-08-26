@@ -11,6 +11,28 @@ resource "helm_release" "argocd" {
   chart            = "argo-cd"
   version          = var.argocd_chart_version
   repository       = "https://argoproj.github.io/argo-helm"
+
+  values = [
+    yamlencode({
+      server = {
+        ingress = {
+          enabled          = true
+          controller       = "aws"
+          ingressClassName = "alb"
+          hostname         = "argocd.${var.domain}"
+          path             = "/"
+          annotations = {
+            "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
+            "alb.ingress.kubernetes.io/target-type"      = "ip"
+            "alb.ingress.kubernetes.io/listen-ports"     = "[{\"HTTPS\":443}]"
+            "alb.ingress.kubernetes.io/certificate-arn"  = module.ingress_acm_certificate.acm_certificate_arn
+            "alb.ingress.kubernetes.io/ssl-redirect"     = "443"
+            "alb.ingress.kubernetes.io/backend-protocol" = "HTTP"
+          }
+        }
+      }
+    })
+  ]
 }
 
 resource "helm_release" "gitops_bridge" {
@@ -36,9 +58,7 @@ resource "helm_release" "gitops_bridge" {
           aws_region                  = var.aws_region
         }
         data = {
-          name             = local.prefix
-          vpc_id           = module.vpc.vpc_id
-          eks_cluster_name = module.eks.cluster_name
+          name = local.prefix
         }
       }
     })
