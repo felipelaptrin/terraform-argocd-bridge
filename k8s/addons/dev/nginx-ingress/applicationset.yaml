@@ -20,7 +20,7 @@ spec:
           helm:
             releaseName: ingress-nginx
       destination:
-        namespace: "kube-system"
+        namespace: "ingress-nginx"
         name: "{{name}}"
       syncPolicy:
         automated: {}
