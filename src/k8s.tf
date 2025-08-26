@@ -42,3 +42,22 @@ resource "helm_release" "gitops_bridge" {
     })
   ]
 }
+
+##############################
+##### EXTERNAL-DNS
+##############################
+module "external_dns_pod_identity" {
+  source  = "terraform-aws-modules/eks-pod-identity/aws"
+  version = "v1.11.0"
+
+  name                          = "aws-external-dns"
+  attach_external_dns_policy    = true
+  external_dns_hosted_zone_arns = [local.hosted_zone_arn]
+  associations = {
+    external-dns = {
+      cluster_name    = module.eks.cluster_name
+      namespace       = "external-dns"
+      service_account = "external-dns"
+    }
+  }
+}

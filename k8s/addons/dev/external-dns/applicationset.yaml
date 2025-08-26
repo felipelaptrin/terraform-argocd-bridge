@@ -27,7 +27,7 @@ spec:
                   value: "{{ metadata.annotations.aws_region }}"
               policy: sync
       destination:
-        namespace: "kube-system"
+        namespace: "external-dns"
         name: "{{name}}"
       syncPolicy:
         automated: {}
