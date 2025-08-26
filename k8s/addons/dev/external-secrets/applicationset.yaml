@@ -1,0 +1,41 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: "external-secrets"
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: "{{ metadata.annotations.environment }}-external-secrets"
+    spec:
+      project: default
+      sources:
+        - chart: external-secrets
+          repoURL: https://charts.external-secrets.io
+          targetRevision: 0.17.0
+          helm:
+            releaseName: external-secrets
+            values: |
+              replicaCount: 1
+
+              image:
+                repository: oci.external-secrets.io/external-secrets/external-secrets
+                pullPolicy: IfNotPresent
+                tag: "v0.17.0"
+
+              installCRDs: true
+
+              serviceAccount:
+                create: true
+                name: "external-secrets"
+      destination:
+        namespace: "external-secrets"
+        name: "{{name}}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
