@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: "reloader"
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: "{{ metadata.annotations.environment }}-reloader"
+    spec:
+      project: default
+      sources:
+        - chart: reloader
+          repoURL: https://kubernetes-sigs.github.io/reloader/
+          targetRevision: 2.1.3
+          helm:
+            releaseName: reloader
+      destination:
+        namespace: "reloader"
+        name: "{{name}}"
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - CRDs=CreateReplace
