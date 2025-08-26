@@ -32,6 +32,13 @@ spec:
               serviceAccount:
                 create: true
                 name: "external-secrets"
+        - repoURL: "{{ metadata.annotations.gitops_repo_url }}"
+          targetRevision: "{{ metadata.annotations.gitops_repo_revision }}"
+          path: "k8s/chart/external-secrets"
+          helm:
+            releaseName: external-secrets-cluster-store
+            valuesObject:
+              awsRegion: "{{ metadata.annotations.aws_region }}"
       destination:
         namespace: "external-secrets"
         name: "{{name}}"
@@ -39,4 +46,3 @@ spec:
         automated: {}
         syncOptions:
           - CreateNamespace=true
-          - CRDs=CreateReplace

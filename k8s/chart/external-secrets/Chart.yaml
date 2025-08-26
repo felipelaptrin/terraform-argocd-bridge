@@ -1,0 +1,6 @@
+apiVersion: v2
+name: external-secrets
+description: A tiny wraper for external secrets to be compliant with the GitOps Bridge approach
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
