@@ -36,7 +36,9 @@ resource "helm_release" "gitops_bridge" {
           aws_region                  = var.aws_region
         }
         data = {
-          name = local.prefix
+          name             = local.prefix
+          vpc_id           = module.vpc.vpc_id
+          eks_cluster_name = module.eks.cluster_name
         }
       }
     })
@@ -79,6 +81,26 @@ module "external_secrets_pod_identity" {
       cluster_name    = module.eks.cluster_name
       namespace       = "external-secrets"
       service_account = "external-secrets"
+    }
+  }
+}
+
+##############################
+##### ALB CONTROLLER
+##############################
+module "aws_lb_controller_pod_identity" {
+  source  = "terraform-aws-modules/eks-pod-identity/aws"
+  version = "v1.11.0"
+
+  name = "aws-load-balancer-controller"
+
+  attach_aws_lb_controller_policy = true
+
+  associations = {
+    alb = {
+      cluster_name    = module.eks.cluster_name
+      namespace       = "kube-system"
+      service_account = "aws-load-balancer-controller"
     }
   }
 }
