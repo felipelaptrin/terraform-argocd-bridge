@@ -13,40 +13,31 @@ resource "helm_release" "argocd" {
   repository       = "https://argoproj.github.io/argo-helm"
 }
 
-resource "kubernetes_secret_v1" "argocd_cluster_bootstrap" {
+resource "helm_release" "gitops_bridge" {
   depends_on = [helm_release.argocd]
 
-  type = "Opaque"
+  name             = "gitops-bridge"
+  description      = "Bridge the gap between Iac and GitOps"
+  namespace        = "argocd"
+  create_namespace = true
+  chart            = "${path.module}/../k8s/chart/gitops-bridge"
 
-  metadata {
-    name      = "cluster-secret-bootstrap"
-    namespace = "argocd"
-    labels = {
-      "argocd.argoproj.io/secret-type" = "cluster"
-    }
-
-    annotations = {
-      environment                 = var.environment
-      gitops_repo_url             = var.gitops_repo_url
-      gitops_repo_addons_basepath = var.gitops_repo_addons_basepath
-      gitops_repo_revision        = var.gitops_repo_revision
-    }
-  }
-
-  data = {
-    name   = local.prefix
-    server = "https://kubernetes.default.svc" # module.eks.cluster_endpoint
-    config = <<-EOF
-        {
-            "tlsClientConfig": {
-                "insecure": false
-            }
+  values = [
+    yamlencode({
+      namespace = "argocd"
+      secret = {
+        name = "cluster-secret-bootstrap"
+        type = "Opaque"
+        annotations = {
+          gitops_repo_url             = var.gitops_repo_url
+          gitops_repo_addons_basepath = var.gitops_repo_addons_basepath
+          gitops_repo_revision        = var.gitops_repo_revision
+          environment                 = var.environment
         }
-    EOF
-  }
-}
-
-resource "kubernetes_manifest" "app_of_apps" {
-  depends_on = [helm_release.argocd]
-  manifest   = yamldecode(file("../k8s/bootstrap/app-of-apps.yaml"))
+        data = {
+          name = local.prefix
+        }
+      }
+    })
+  ]
 }

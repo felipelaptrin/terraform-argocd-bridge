@@ -16,7 +16,6 @@
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.65.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 
 ## Modules
 
@@ -31,8 +30,7 @@
 | Name | Type |
 |------|------|
 | [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
-| [kubernetes_manifest.app_of_apps](https://registry.terraform.io/providers/hashicorp/kubernetes/2.38.0/docs/resources/manifest) | resource |
-| [kubernetes_secret_v1.argocd_cluster_bootstrap](https://registry.terraform.io/providers/hashicorp/kubernetes/2.38.0/docs/resources/secret_v1) | resource |
+| [helm_release.gitops_bridge](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 

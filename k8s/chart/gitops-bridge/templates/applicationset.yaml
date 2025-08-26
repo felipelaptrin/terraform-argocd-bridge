@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ .Values.applicationSet.name | default "cluster-addons" | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  syncPolicy:
+    preserveResourcesOnDeletion: {{ .Values.applicationSet.preserveResourcesOnDeletion | default true }}
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: app-of-apps-addons
+    spec:
+      project: {{ .Values.applicationSet.project | default "default" | quote }}
+      source:
+        # Render the *literal* Argo template tokens (escaped so Helm doesn't eat them)
+        repoURL: "{{`{{ metadata.annotations.gitops_repo_url }}`}}"
+        path: "{{`{{ metadata.annotations.gitops_repo_addons_basepath }}`}}/{{`{{ metadata.annotations.environment }}`}}"
+        targetRevision: "{{`{{ metadata.annotations.gitops_repo_revision }}`}}"
+        directory:
+          recurse: true
+      destination:
+        namespace: {{ .Values.applicationSet.destinationNamespace | default "argocd" | quote }}
+        name: "{{`{{name}}`}}"
+      syncPolicy:
+        automated: {{- if .Values.applicationSet.automatedSync }} {{- toYaml .Values.applicationSet.automatedSync | nindent 10 }} {{- else }} {} {{- end }}

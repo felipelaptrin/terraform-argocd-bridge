@@ -1,0 +1,33 @@
+namespace: argocd
+secret:
+  name: cluster-secret-bootstrap
+  type: Opaque
+  extraLabels:
+    {}
+    # example: team: platform
+  annotations:
+    {}
+    # gitops_repo_url: https://github.com/org/repo.git
+    # gitops_repo_addons_basepath: k8s/addons
+    # environment: prod
+    # gitops_repo_revision: main
+
+  # Secret contents
+  data:
+    name: "" #! required: name of the cluster (string)
+    # server defaults to in-cluster service DNS
+    server: "https://kubernetes.default.svc"
+    # config value as an object; will be rendered as JSON
+    config:
+      tlsClientConfig:
+        insecure: false
+
+applicationSet:
+  name: cluster-addons
+  # If you need to override the project or destination namespace, do it here
+  project: default
+  destinationNamespace: argocd
+
+  # No need to change below unless you want to alter sync behaviors
+  preserveResourcesOnDeletion: true
+  automatedSync: {}
