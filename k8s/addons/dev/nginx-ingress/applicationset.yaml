@@ -21,13 +21,9 @@ spec:
             releaseName: ingress-nginx
             valuesObject:
               controller:
-                ingressClass: nginx
                 ingressClassResource:
-                  enabled: true
-                  name: nginx
+                  name: external-nginx
                 service:
-                  type: LoadBalancer
-                  loadBalancerClass: service.k8s.aws/nlb
                   annotations:
                     service.beta.kubernetes.io/aws-load-balancer-type: "external"
                     service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
