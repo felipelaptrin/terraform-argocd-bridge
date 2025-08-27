@@ -31,11 +31,6 @@ spec:
                   annotations:
                     service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
                     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
-        - repoURL: https://github.com/kubernetes/ingress-nginx
-          targetRevision: controller-v1.13.1
-          path: deploy/static/provider/aws
-          directory:
-            include: "deploy.yaml"
       destination:
         namespace: "ingress-nginx"
         name: "{{name}}"
