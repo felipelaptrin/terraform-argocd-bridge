@@ -31,6 +31,8 @@ spec:
                     service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
                     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
                     service.beta.kubernetes.io/aws-load-balancer-subnets: "{{ metadata.annotations.public_subnets }}"
+                    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+                    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "{{ metadata.annotations.acm_arn }}"
       destination:
         namespace: "ingress-nginx"
         name: "{{name}}"
