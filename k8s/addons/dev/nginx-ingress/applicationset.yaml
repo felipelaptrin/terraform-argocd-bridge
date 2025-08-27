@@ -19,7 +19,7 @@ spec:
           targetRevision: 4.13.1
           helm:
             releaseName: ingress-nginx
-            valuesObject:
+            values: |
               controller:
                 ingressClassResource:
                   name: external-nginx
